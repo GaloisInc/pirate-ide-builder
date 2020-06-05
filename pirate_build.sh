@@ -16,7 +16,7 @@ fi
 
 cd vscode || exit
 
-cp ../../extensions/* extensions/
+# cp -r ../../extensions/* extensions/
 
 export NODE_ENV=production
 
