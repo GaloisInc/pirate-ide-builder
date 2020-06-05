@@ -16,6 +16,8 @@ fi
 
 cd vscode || exit
 
+cp ../../extensions/* extensions/
+
 export NODE_ENV=production
 
 yarn gulp compile-build
