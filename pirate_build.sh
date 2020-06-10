@@ -7,12 +7,11 @@ export npm_config_arch="$BUILDARCH"
 export npm_config_target_arch="$BUILDARCH"
 
 if [ ! -d vscode ]; then
-    curl -LO "${VSCODE_SOURCE_URL}" 
+    curl -LO "${VSCODE_SOURCE_URL}"
     unzip "$VSCODE_VERSION".zip
     mv "vscode-${VSCODE_VERSION}" vscode
+    ./prepare_vscode.sh
 fi
-
-./prepare_vscode.sh
 
 cd vscode || exit
 
@@ -29,10 +28,11 @@ if [[ "$BUILD_TARGET" == "osx" ]]; then
   yarn gulp vscode-darwin-min
   cd ../VSCode-darwin
   create-dmg VSCodium.app ..
-
+  cd ..
 elif [[ "$BUILD_TARGET" == "win32" ]]; then
   cp LICENSE.txt LICENSE.rtf # windows build expects rtf license
   yarn gulp "vscode-win32-${BUILDARCH}-min"
+  cd ..
   # yarn gulp "vscode-win32-${BUILDARCH}-code-helper"
   # yarn gulp "vscode-win32-${BUILDARCH}-inno-updater"
   # yarn gulp "vscode-win32-${BUILDARCH}-archive"
@@ -45,7 +45,6 @@ else # linux
   if [[ "$BUILDARCH" == "x64" ]]; then
     yarn gulp "vscode-linux-${BUILDARCH}-build-rpm"
   fi
-  . ../create_appimage.sh
+  cd ..
+  bash -e src/resources/linux/appimage/pkg2appimage VSCodium-AppImage-Recipe.yml
 fi
-
-cd ..
