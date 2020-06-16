@@ -6,6 +6,12 @@ export BUILDARCH=x64
 export npm_config_arch="$BUILDARCH"
 export npm_config_target_arch="$BUILDARCH"
 
+case $BUILD_TARGET in
+  "osx"|"win32"|"linux") echo "Build target set to ${BUILD_TARGET}" ;;
+  *) echo "You need to set the BUILD_TARGET variable to one of: osx, win32, linux" && exit ;;
+esac
+
+
 if [ ! -d vscode ]; then
     curl -LO "${VSCODE_SOURCE_URL}" 
     unzip "$VSCODE_VERSION".zip
